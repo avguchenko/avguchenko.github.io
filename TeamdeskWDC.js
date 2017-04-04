@@ -65,12 +65,17 @@
 			for (var i = 0; i < teamdesk_cols.length; i++) {
 				td_column = teamdesk_cols[i]
 				if (td_column.kind != "Formula" && td_column.kind != "Lookup") {
+					var alias =  clean_colname(td_column.name);
+					if (td_column.reference != undefined) {
+						alias = alias + "_id"
+					}
 					wdc_cols.push({ 
 						//tebleau does not allow spaces in incoming column names, 
 						//so we clean it and store the teamdesk column name in "description"
 						id: clean_colname(td_column.name),
 						dataType: conn.typemap[td_column.type] || tableau.dataTypeEnum.string,
-						description: td_column.name
+						description: td_column.name,
+						alias: alias
 					})
 				}
 			}
@@ -158,7 +163,7 @@
 					teamdesk_col_name = wdc_cols[f].description
 					if (wdc_cols[f].dataType == tableau.dataTypeEnum.datetime) {
 						record[wdc_cols[f].id] = new Date(feat[i][teamdesk_col_name])
-					} else if (wdc_cols[f].dataType == tableau.dataTypeEnum.int) {
+					} else if (wdc_cols[f].dataType == tableau.dataTypeEnum.int || wdc_cols[f].alias.includes("_id")) {
 						record[wdc_cols[f].id] = parseInt(feat[i][teamdesk_col_name])
 					} else {
 						record[wdc_cols[f].id] = feat[i][teamdesk_col_name]
