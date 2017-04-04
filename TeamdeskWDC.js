@@ -1,6 +1,5 @@
 (function () {
     var myConnector = tableau.makeConnector();
-
     clean_colname = function(teamdesk_column_name) {
     	return teamdesk_column_name.replace(new RegExp(/[-\s:'/()]/g), '_')	
     }
@@ -14,7 +13,7 @@
     		var existing_params = JSON.parse(tableau.connectionData)
 	    	//...and add in the new things from connData
 	    	var all_params = $.extend({}, existing_params, connData); 
-	    	//finally, store everything back into tableau.connectionData
+	    	//store everything back into tableau.connectionData
 	    	tableau.connectionData = JSON.stringify(all_params);
     	} else {
     		tableau.connectionData = JSON.stringify(connData)
@@ -23,7 +22,6 @@
 
     myConnector.init = function (initCallback) {
     	var connData = {}
-    	connData.main_url = "https://www.teamdesk.net/secure/api/v2"
     	connData.select = "select.json"
     	connData.describe = "describe.json"
     	connData.sort_clause = "sort=Date Created//ASC"
@@ -35,7 +33,7 @@
     		"Timestamp" : tableau.dataTypeEnum.datetime,
     		"Text" : tableau.dataTypeEnum.string,
     		"User" : tableau.dataTypeEnum.string,
-    		"Autonumber" : tableau.dataTypeEnum.string,
+    		"Autonumber" : tableau.dataTypeEnum.int,
     		"Numeric" : tableau.dataTypeEnum.float,
     		"Phone" : tableau.dataTypeEnum.string,
     		"Email" : tableau.dataTypeEnum.string,
@@ -60,7 +58,7 @@
 			var teamdesk_cols = resp.columns
 			var wdc_cols = [];
 			
-			var msg = 'Begin fetching schema for ' + conn.tables[tbl_index] + 's...'
+			var msg = 'Fetching schema for ' + conn.tables[tbl_index] + 's...'
 			tableau.reportProgress(msg);
 			tableau.log(msg);
 			
@@ -83,19 +81,17 @@
 		        alias : conn.tables[tbl_index],
 		        columns : wdc_cols_copy
 			})
+
+			msg = 'Finished fetching schema for ' + conn.tables[tbl_index]
+			tableau.reportProgress(msg);
+			tableau.log(msg);
+
 			if(wdc_tables.length == conn.tables.length) {
-				msg = 'Finished fetching schema for ' + conn.tables[tbl_index] + '. Done!'
-				tableau.reportProgress(msg);
-				tableau.log(msg);
 				//Once we're finished, load the full schema into connData for later use
 				conn.wdc_tables = wdc_tables;
 				tableau.connectionData = JSON.stringify(conn);
 				cb(wdc_tables);
 			} else {
-				//console.log('Finished fetching schema for ' + conn.tables[tbl_index] + '. Continuing...')
-				msg = 'Finished fetching schema for ' + conn.tables[tbl_index] + '. Continuing...'
-				tableau.reportProgress(msg);
-				tableau.log(msg);
 				tbl_index++;
 				getSchemaHelper(wdc_tables, tbl_index, cb);
 			}
@@ -136,7 +132,6 @@
     	var sort_url = encodeURI(conn.sort_clause).replace(new RegExp('/', 'g'), '%2F');
     	var filter_url = encodeURI(filter_clause).replace(new RegExp('#', "g"), '%23')
     	var top_url = "top=" + top
-    	
     	var wdc_table = conn.wdc_tables.filter(function(e) {
     		return e.alias == table.tableInfo.alias;
     	})[0]
@@ -151,13 +146,11 @@
     	var columns_url = encodeURI("column=" + teamdesk_col_names.join("&column=")).replace(new RegExp('/', 'g'), '%2F').replace(new RegExp('#', "g"), '%23');
     	var call_url = [conn.main_url, conn.app_id, tableau.password, tbl_name_api, conn.select].join("/")
     	var final_url = call_url + "?" + columns_url + "&" + sort_url + "&" + top_url + "&" + filter_url;
-
 		var tableData = [];
 
 		$.getJSON(final_url, function(resp) {
 			var feat = resp;
             var i = 0;
-
 			for (i = 0, len = feat.length; i < len; i++) {
 				var record = {}
 				for (var f = 0; f < wdc_cols.length; f++) {
@@ -195,8 +188,6 @@
     tableau.registerConnector(myConnector);
     $(document).ready(function () {
     $("#submitButton").click(function () {
-        tableau.connectionName = "TeamDesk Bookings";
-
         var connData = {}
         // alert( $("#startDate").val())
         connData.minDate = $("#filterValue").val()
@@ -204,8 +195,10 @@
         connData.tables = process_string_list($("#teamdeskTables").val())
         connData.filter_tables = process_string_list($("#filteredTables").val())
         connData.filter_column = $("#filterField").val()
+        connData.main_url = $("#main_url").val()
 
         inject_into_tableau(connData)
+        tableau.connectionName = "TeamDesk " + connData.app_id;
         tableau.password = $("#token").val()
         tableau.submit();
     });
