@@ -66,7 +66,7 @@
 				td_column = teamdesk_cols[i]
 				if (td_column.kind != "Formula" && td_column.kind != "Lookup") {
 					var wdc_alias =  clean_colname(td_column.name);
-					var wdc_dataType = conn.typemap[td_column.type]
+					var wdc_dataType = conn.typemap[td_column.type] || tableau.dataTypeEnum.string
 					if (td_column.reference != undefined) {
 						wdc_alias = wdc_alias + "_id"
 						//override dataType for references
@@ -76,7 +76,7 @@
 						//tebleau does not allow spaces in incoming column names, 
 						//so we clean it and store the teamdesk column name in "description"
 						id: clean_colname(td_column.name),
-						dataType: conn.typemap[td_column.type] || tableau.dataTypeEnum.string,
+						dataType: wdc_dataType,
 						description: td_column.name,
 						alias: wdc_alias
 					})
