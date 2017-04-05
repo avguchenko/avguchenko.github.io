@@ -169,7 +169,7 @@
 						record[wdc_cols[f].id] = new Date(feat[i][teamdesk_col_name])
 					} else if (wdc_cols[f].dataType == tableau.dataTypeEnum.int) {
 						record[wdc_cols[f].id] = parseInt(feat[i][teamdesk_col_name])
-					} else if (alias && alias.indexOf("_id")) {
+					} else if (alias && alias.indexOf("_id") > 0) {
 						record[wdc_cols[f].id] = parseInt(feat[i][teamdesk_col_name])
 					} else {
 						record[wdc_cols[f].id] = feat[i][teamdesk_col_name]
