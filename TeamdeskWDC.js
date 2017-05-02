@@ -10,6 +10,7 @@
     	teamdesk_column_name = teamdesk_column_name.split(')').join('_')
     	teamdesk_column_name = teamdesk_column_name.split('(').join('_')
     	//replace(new RegExp(/[-\s:'#/()]/g), '_')
+    	return teamdesk_column_name
     }
 
     process_string_list = function(tables_string) {
