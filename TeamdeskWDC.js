@@ -1,7 +1,7 @@
 (function () {
     var myConnector = tableau.makeConnector();
     clean_colname = function(teamdesk_column_name) {
-    	return teamdesk_column_name.replace(new RegExp(/[-\s:'/()]/g), '_')	
+    	return teamdesk_column_name.replace(new RegExp(/[-\s:'#/()]/g), '_')
     }
 
     process_string_list = function(tables_string) {
