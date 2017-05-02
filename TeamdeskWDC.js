@@ -8,7 +8,7 @@
     	teamdesk_column_name = teamdesk_column_name.split('#').join('_')
     	teamdesk_column_name = teamdesk_column_name.split('/').join('_')
     	teamdesk_column_name = teamdesk_column_name.split(')').join('_')
-    	teamdesk_column_name = teamdesk_column_name.split('(').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('(').join('_').toLowerCase();
     	//replace(new RegExp(/[-\s:'#/()]/g), '_')
     	return teamdesk_column_name
     }
@@ -96,7 +96,7 @@
 			wdc_cols_copy = wdc_cols
 			//console.log({wdc_cols_copy: wdc_cols_copy})
 			wdc_tables.push({
-				id : conn.tables[tbl_index],
+				id : clean_colname(conn.tables[tbl_index]),
 		        alias : conn.tables[tbl_index],
 		        columns : wdc_cols_copy
 			})
