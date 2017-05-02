@@ -1,7 +1,15 @@
 (function () {
     var myConnector = tableau.makeConnector();
     clean_colname = function(teamdesk_column_name) {
-    	return teamdesk_column_name.replace(new RegExp(/[-\s:'#/()]/g), '_')
+    	teamdesk_column_name = teamdesk_column_name.split('-').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split(' ').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split(':').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split("'").join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('#').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('/').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split(')').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('(').join('_')
+    	//replace(new RegExp(/[-\s:'#/()]/g), '_')
     }
 
     process_string_list = function(tables_string) {
