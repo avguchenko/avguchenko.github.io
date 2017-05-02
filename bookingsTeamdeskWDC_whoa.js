@@ -195,7 +195,7 @@
     tableau.registerConnector(myConnector);
     $(document).ready(function () {
     $("#submitButton").click(function () {
-        tableau.connectionName = "TeamDesk Bookings";
+        tableau.connectionName = "TeamDesk Connection";
 
         var connData = {}
         // alert( $("#startDate").val())
