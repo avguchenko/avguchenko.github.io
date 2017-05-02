@@ -9,7 +9,11 @@
     	teamdesk_column_name = teamdesk_column_name.split('/').join('_')
     	teamdesk_column_name = teamdesk_column_name.split(')').join('_')
     	teamdesk_column_name = teamdesk_column_name.split('(').join('_')
-    	teamdesk_column_name = teamdesk_column_name.split(',').join('_').toLowerCase();
+    	teamdesk_column_name = teamdesk_column_name.split(',').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('.').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('!').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split('?').join('_')
+    	teamdesk_column_name = teamdesk_column_name.split(';').join('_').toLowerCase();
     	//replace(new RegExp(/[-\s:'#/()]/g), '_')
     	return teamdesk_column_name
     }
