@@ -5,7 +5,7 @@
     }
 
     process_string_list = function(tables_string) {
-    	return tables_string.split(/[\s,]+/).map(function(item) {
+    	return tables_string.split(/[,]+/).map(function(item) {
 			  return item.trim();
 			});
     }
