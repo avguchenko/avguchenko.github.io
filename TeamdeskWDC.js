@@ -5,7 +5,9 @@
     }
 
     process_string_list = function(tables_string) {
-    	return tables_string.split(/[\s,]+/).map((item)=>item.trim())
+    	return tables_string.split(/[\s,]+/).map(function(item) {
+			  return item.trim();
+			});
     }
 
     inject_into_tableau = function(connData) {
