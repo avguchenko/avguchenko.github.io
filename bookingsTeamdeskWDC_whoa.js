@@ -6,7 +6,7 @@
     }
 
     process_string_list = function(tables_string) {
-    	return tables_string.split(/[\s,]+/)
+    	return tables_string.split(/[,]+/).map((item)=>item.trim())
     }
 
     inject_into_tableau = function(connData) {
