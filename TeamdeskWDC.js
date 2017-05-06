@@ -137,7 +137,7 @@
     			minDate = moment().year(2000).month(1).day(1);
     		}
     	}
-		var cursor = 0;
+		var cursor = -1;
     	getDataHelper(table, minDate, cursor, records_received, doneCallback)
     }
 
