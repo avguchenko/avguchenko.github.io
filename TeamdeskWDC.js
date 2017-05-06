@@ -80,7 +80,7 @@
 			
 			for (var i = 0; i < teamdesk_cols.length; i++) {
 				td_column = teamdesk_cols[i]
-				if (td_column.kind != "Lookup" && td_column.kind != "Summary") {
+				//if (td_column.kind != "Lookup" && td_column.kind != "Summary") {
 					var wdc_alias =  clean_colname(td_column.name);
 					var wdc_dataType = conn.typemap[td_column.type] || tableau.dataTypeEnum.string
 					if (td_column.reference != undefined) {
@@ -96,7 +96,7 @@
 						description: td_column.name,
 						alias: wdc_alias
 					})
-				}
+				//}
 			}
 			wdc_cols_copy = wdc_cols
 			//console.log({wdc_cols_copy: wdc_cols_copy})
